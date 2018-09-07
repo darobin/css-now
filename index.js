@@ -1,4 +1,11 @@
 
+// XXX
+//  So, as usual in the JS world if you look away for a few months nothing is compatible anymore.
+//  - switch to using the API
+//  - in case of watching, roll our own watching API
+//  - integrate with plugins directly ourselves
+//  - release as major
+
 // -    "cssnano": "^3.10.0",
 // +    "cssnano": "^4.1.0",
 // -    "postcss": "^5.2.15",
