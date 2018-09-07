@@ -27,20 +27,21 @@
   },
   "homepage": "https://github.com/darobin/css-now",
   "devDependencies": {
-    "mocha": "^3.2.0",
+    "eslint-config-robin": "^4.0.0",
+    "mocha": "^5.2.0",
     "shortid": "^2.2.13"
   },
   "dependencies": {
     "commander": "^2.18.0",
-    "cssnano": "^3.10.0",
-    "npm-path": "^2.0.4",
+    "cssnano": "^4.1.0",
+    "cssnano-preset-default": "^4.0.0",
     "once": "^1.4.0",
-    "postcss": "^5.2.15",
+    "postcss": "^7.0.2",
     "postcss-browser-reporter": "^0.5.0",
-    "postcss-cli": "^2.6.0",
-    "postcss-cssnext": "^2.9.0",
-    "postcss-import": "^9.1.0",
-    "postcss-reporter": "^3.0.0",
-    "postcss-url": "^5.1.2"
+    "postcss-cli": "^6.0.0",
+    "postcss-cssnext": "^3.1.0",
+    "postcss-import": "^12.0.0",
+    "postcss-reporter": "^6.0.0",
+    "postcss-url": "^8.0.0"
   }
 }

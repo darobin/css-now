@@ -11,7 +11,9 @@
     "verbose":  true
   },
   "cssnano": {
-    "autoprefixer": false,
-    "safe":         true
+    "preset": [
+      "default",
+      {}
+    ]
   }
 }
