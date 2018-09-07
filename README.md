@@ -1,18 +1,19 @@
 
 
-# cssnow
-[![CircleCI](https://circleci.com/gh/scienceai/cssnow.svg?style=svg)](https://circleci.com/gh/scienceai/cssnow)
+# css-now
 
-A CSS pre-processor, really simple to set up, sort of like [cssnext](http://cssnext.io/) used to be.
+A CSS pre-processor, really simple to set up, sort of like [`cssnext`](http://cssnext.io/) used to
+be.
 
-Back when we were young, cssnext used to be pretty simple: you installed it, you ran it, it worked.
-Nowadays, cssnext has evolved to build atop PostCSS, with lots of configuration coming with.
+Back when we were young, `cssnext` used to be pretty simple: you installed it, you ran it, it
+worked. Nowadays, `cssnext` has evolved to build atop PostCSS, with lots of configuration coming
+with.
 
 I have nothing against that move. It's a lot more powerful and flexible, and overall I think it is
-absolutely the right thing to do. But we have lots of repos, and they all need a default that's
-pretty much what cssnext used to be. So what `cssnow` does is pretty much that: use cssnext and
-PostCSS with a default setup that matches what we need. It's a whole lot fewer direct dependencies
-to worry about, and a way to centralise options we like (such as being safe out of the box when
+absolutely the right thing to do. But I have lots of projects, and they all need a default that's
+pretty much what `cssnext` used to be. So what `css-now` does is pretty much that: use `cssnext` and
+PostCSS with a default setup that matches what I need. It's a whole lot fewer direct dependencies
+to worry about, and a way to centralise options I like (such as being safe out of the box when
 minifying).
 
 This is for you if you like these defaults and don't want to think too much about your CSS
@@ -22,11 +23,11 @@ pre-processing; if you prefer the flexibility and power stick to the full PostCS
 
 The usual:
 
-    npm install --save cssnow
+    npm install --save css-now
 
 ## Usage
 
-    cssnow [options] <input> <output>
+    css-now [options] <input> <output>
 
 If `output` is unspecified, it prints to standard out; likewise if `input` is not specified it reads
 from standard in.
@@ -40,7 +41,7 @@ Options include:
 
 ## API
 
-You can use cssnow as a library. It exports a single function (the default one). Call it with
+You can use `css-now` as a library. It exports a single function (the default one). Call it with
 `options` and a callback. The options (all of which are optional) are:
 
 * `watch`: boolean, enter watch mode or not.
@@ -55,4 +56,4 @@ external tools that support a PostCSS configuration, such as webpack.
 
 ## Global installation
 
-You may install it globally if you wish to (with `npm install -g cssnow`), it will just work.
+You may install it globally if you wish to (with `npm install -g css-now`), it will just work.
