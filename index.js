@@ -1,57 +1,55 @@
 
-// XXX
-//  So, as usual in the JS world if you look away for a few months nothing is compatible anymore.
-//  - switch to using the API
-//  - in case of watching, roll our own watching API
-//  - integrate with plugins directly ourselves
-//  - release as major
-
-// -    "cssnano": "^3.10.0",
-// +    "cssnano": "^4.1.0",
-// -    "postcss": "^5.2.15",
-// +    "postcss": "^7.0.2",
-// -    "postcss-cli": "^2.6.0",
-// -    "postcss-cssnext": "^2.9.0",
-// -    "postcss-import": "^9.1.0",
-// -    "postcss-reporter": "^3.0.0",
-// -    "postcss-url": "^5.1.2"
-// +    "postcss-cli": "^6.0.0",
-// +    "postcss-cssnext": "^3.1.0",
-// +    "postcss-import": "^12.0.0",
-// +    "postcss-reporter": "^6.0.0",
-// +    "postcss-url": "^8.0.0"
-
-var fs = require('fs')
-  , path = require('path')
-  , join = path.join
+let { watch, readFile, writeFile } = require('fs')
+  , postcss = require('postcss')
+  , atImport = require('postcss-import')
+  , url = require('postcss-url')
+  , presetEnv = require('postcss-preset-env')
+  , browserReporter = require('postcss-browser-reporter')
+  , reporter = require('postcss-reporter')
+  , nano = require('cssnano-preset-default')
 ;
 
-module.exports = function (options, cb) {
-  var args = [];
-  npmPath({ cwd: __dirname }, function (err) {
-    if (err) return cb(err);
-    if (options.input) args.push(options.input);
-    if (options.watch) args.push('--watch');
-    args.push('--config');
-    args.push((process.env.NODE_ENV === 'production') ? prodConfig : devConfig);
-    if (options.output) {
-      args.push('--output');
-      args.push(options.output);
-    }
-    console.log('postcss', args);
-    var child = spawn('postcss', args, { stdio:  ['inherit', 'inherit', 'pipe'] })
-      , end = once(cb)
-      , error = null
-    ;
-    child.stderr.on('data', function (data) {
-      if (!error) error = '';
-      error += data;
+module.exports = function ({ watch: mustWatch = false, input, output } = {}, cb) {
+  if (!input) return cb(new Error('css-now needs an input parameter'));
+  if (mustWatch) {
+    let watcher = watch(input, { persistent: true }, (evt) => {
+      if (evt === 'rename') {
+        console.error(`css-now saw a 'rename' event for ${input}, needs restarting.`);
+        watcher.close();
+      }
+      else cssnow(input, output, cb);
     });
-    child.on('error', end);
-    child.on('exit', function () { end(error); });
-  });
+  }
+  cssnow(input, output, cb);
 };
 
-module.exports.development = dev;
-module.exports.production = prod;
-module.exports.configuration = (process.env.NODE_ENV === 'production') ? prod : dev;
+function cssnow (input, output, cb) {
+  readFile(input, 'utf8', (err, data) => {
+    if (err) return cb(err);
+    let steps = [
+      atImport(),
+      url(),
+      presetEnv(),
+    ];
+    if (process.env.NODE_ENV === 'production') {
+      steps.push(browserReporter());
+      steps.push(reporter());
+    }
+    else {
+      steps.push(nano());
+    }
+    postcss(steps)
+      .process(data)
+      .then(({ css }) => {
+        if (output) {
+          writeFile(output, css, (err) => {
+            if (err) return cb(err);
+            cb(null, css);
+          });
+        }
+        else cb(null, css);
+      })
+      .catch(cb)
+    ;
+  });
+}

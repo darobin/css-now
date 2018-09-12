@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var cssnow = require('.')
+let cssnow = require('.')
   , commander = require('commander')
 ;
 
@@ -8,15 +8,15 @@ commander
   .version(require('./package.json').version)
   .option('-w, --watch', 'Watch mode')
   .arguments('<input> <output>')
-  .action(function (input, output, options) {
+  .action((input, output, options) => {
     cssnow(
       {
         watch:    options.watch,
-        input:    input,
-        output:   output,
         execDir:  __dirname,
+        input,
+        output,
       },
-      function (err) {
+      (err) => {
         if (err) {
           console.error(err);
           process.exit(42);

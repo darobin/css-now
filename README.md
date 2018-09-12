@@ -29,9 +29,6 @@ The usual:
 
     css-now [options] <input> <output>
 
-If `output` is unspecified, it prints to standard out; likewise if `input` is not specified it reads
-from standard in.
-
 When `NODE_ENV` is set to `production`, it minifies and does not report errors; otherwise it does
 not minify but reports errors. Due to this behaviour, it (currently) produces no source maps.
 
@@ -45,14 +42,10 @@ You can use `css-now` as a library. It exports a single function (the default on
 `options` and a callback. The options (all of which are optional) are:
 
 * `watch`: boolean, enter watch mode or not.
-* `input`: input path.
+* `input`: input path, required.
 * `output`: output path.
 
-The callback will receive an error if there was one, just `null` otherwise.
-
-It also has a few named exports: `production`, `development`, and `configuration` which are all the
-configuration objects for the respective environments plus the resolved one — these can be used with
-external tools that support a PostCSS configuration, such as webpack.
+The callback will receive an error if there was one, just `null` otherwise, and the processed CSS.
 
 ## Global installation
 
