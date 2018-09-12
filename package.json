@@ -1,5 +1,5 @@
 {
-  "name": "css-now",
+  "name": "cssn",
   "version": "3.0.0",
   "description": "Sort of like cssnext used to be",
   "main": "./index.js",
@@ -7,17 +7,17 @@
     "test": "mocha --reporter spec --bail"
   },
   "bin": {
-    "css-now": "./cli.js"
+    "cssn": "./cli.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/darobin/css-now.git"
+    "url": "https://github.com/darobin/cssn.git"
   },
   "eslintConfig": {
     "extends": "robin"
   },
   "keywords": [
-    "css-now",
+    "cssn",
     "CSS",
     "preprocessor",
     "PostCSS",
@@ -26,9 +26,9 @@
   "author": "Robin Berjon <robin@berjon.com>",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/darobin/css-now/issues"
+    "url": "https://github.com/darobin/cssn/issues"
   },
-  "homepage": "https://github.com/darobin/css-now",
+  "homepage": "https://github.com/darobin/cssn",
   "devDependencies": {
     "eslint-config-robin": "^4.0.0",
     "mocha": "^5.2.0",

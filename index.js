@@ -10,11 +10,11 @@ let { watch, readFile, writeFile } = require('fs')
 ;
 
 module.exports = function ({ watch: mustWatch = false, input, output } = {}, cb) {
-  if (!input) return process.nextTick(() => cb(new Error('css-now needs an input parameter')));
+  if (!input) return process.nextTick(() => cb(new Error('cssn needs an input parameter')));
   if (mustWatch) {
     let watcher = watch(input, { persistent: true }, (evt) => {
       if (evt === 'rename') {
-        console.error(`css-now saw a 'rename' event for ${input}, needs restarting.`);
+        console.error(`cssn saw a 'rename' event for ${input}, needs restarting.`);
         watcher.close();
       }
       else cssnow(input, output, cb);
@@ -35,8 +35,8 @@ function cssnow (input, output, cb) {
       steps.push(nano({ preset: 'default' }));
     }
     else {
-      // steps.push(browserReporter());
-      // steps.push(reporter());
+      steps.push(browserReporter());
+      steps.push(reporter());
     }
     postcss(steps)
       .process(data, { from: input, to: output })
