@@ -6,11 +6,11 @@ let { watch, readFile, writeFile } = require('fs')
   , presetEnv = require('postcss-preset-env')
   , browserReporter = require('postcss-browser-reporter')
   , reporter = require('postcss-reporter')
-  , nano = require('cssnano-preset-default')
+  , nano = require('cssnano')
 ;
 
 module.exports = function ({ watch: mustWatch = false, input, output } = {}, cb) {
-  if (!input) return cb(new Error('css-now needs an input parameter'));
+  if (!input) return process.nextTick(() => cb(new Error('css-now needs an input parameter')));
   if (mustWatch) {
     let watcher = watch(input, { persistent: true }, (evt) => {
       if (evt === 'rename') {
@@ -25,31 +25,31 @@ module.exports = function ({ watch: mustWatch = false, input, output } = {}, cb)
 
 function cssnow (input, output, cb) {
   readFile(input, 'utf8', (err, data) => {
-    if (err) return cb(err);
+    if (err) return process.nextTick(() => cb(err));
     let steps = [
       atImport(),
       url(),
       presetEnv(),
     ];
     if (process.env.NODE_ENV === 'production') {
-      steps.push(browserReporter());
-      steps.push(reporter());
+      steps.push(nano({ preset: 'default' }));
     }
     else {
-      steps.push(nano());
+      // steps.push(browserReporter());
+      // steps.push(reporter());
     }
     postcss(steps)
-      .process(data)
+      .process(data, { from: input, to: output })
       .then(({ css }) => {
         if (output) {
           writeFile(output, css, (err) => {
-            if (err) return cb(err);
-            cb(null, css);
+            if (err) return process.nextTick(() => cb(err));
+            process.nextTick(() => cb(null, css));
           });
         }
-        else cb(null, css);
+        else process.nextTick(() => cb(null, css));
       })
-      .catch(cb)
+      .catch((err) => process.nextTick(() => cb(err)))
     ;
   });
 }
