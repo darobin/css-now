@@ -35,6 +35,7 @@
     "shortid": "^2.2.13"
   },
   "dependencies": {
+    "chokidar": "^2.0.4",
     "commander": "^2.18.0",
     "cssnano": "^4.1.0",
     "cssnano-preset-default": "^4.0.0",

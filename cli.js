@@ -19,9 +19,9 @@ commander
       (err) => {
         if (err) {
           console.error(err);
-          process.exit(42);
+          if (!options.watch) process.exit(42);
         }
-        process.exit(0);
+        if (!options.watch) process.exit(0);
       }
     );
   })

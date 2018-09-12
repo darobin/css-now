@@ -1,5 +1,6 @@
 
-let { watch, readFile, writeFile } = require('fs')
+let { readFile, writeFile } = require('fs')
+  , chokidar = require('chokidar')
   , postcss = require('postcss')
   , atImport = require('postcss-import')
   , url = require('postcss-url')
@@ -12,13 +13,15 @@ let { watch, readFile, writeFile } = require('fs')
 module.exports = function ({ watch: mustWatch = false, input, output } = {}, cb) {
   if (!input) return process.nextTick(() => cb(new Error('cssn needs an input parameter')));
   if (mustWatch) {
-    let watcher = watch(input, { persistent: true }, (evt) => {
-      if (evt === 'rename') {
-        console.error(`cssn saw a 'rename' event for ${input}, needs restarting.`);
-        watcher.close();
-      }
-      else cssnow(input, output, cb);
+    let watcher = chokidar.watch(input, { persistent: true });
+    watcher.on('change', () => {
+      cssnow(input, output, cb);
     });
+    watcher.on('unlink', () => {
+      cb(new Error(`cssn saw an 'unlin' event for ${input}, needs restarting.`));
+      watcher.close();
+    });
+    watcher.on('error', cb);
   }
   cssnow(input, output, cb);
 };
@@ -43,13 +46,13 @@ function cssnow (input, output, cb) {
       .then(({ css }) => {
         if (output) {
           writeFile(output, css, (err) => {
-            if (err) return process.nextTick(() => cb(err));
-            process.nextTick(() => cb(null, css));
+            if (err) return cb(err);
+            cb(null, css);
           });
         }
-        else process.nextTick(() => cb(null, css));
+        else cb(null, css);
       })
-      .catch((err) => process.nextTick(() => cb(err)))
+      .catch(cb)
     ;
   });
 }
