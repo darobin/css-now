@@ -19,8 +19,6 @@ module.exports = function ({ watch: mustWatch = false, input, output } = {}, cb)
     watcher.on('change', () => {
       cssnow(input, output, cb, { watcher });
     });
-    // XXX this should only apply to the root one, use it to unwatch
-    // only exit if there are no files left
     watcher.on('unlink', () => {
       cb(new Error(`cssn saw an 'unlink' event for ${input}, needs restarting.`));
       watcher.close();
