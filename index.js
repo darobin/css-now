@@ -18,7 +18,7 @@ module.exports = function ({ watch: mustWatch = false, input, output } = {}, cb)
       cssnow(input, output, cb);
     });
     watcher.on('unlink', () => {
-      cb(new Error(`cssn saw an 'unlin' event for ${input}, needs restarting.`));
+      cb(new Error(`cssn saw an 'unlink' event for ${input}, needs restarting.`));
       watcher.close();
     });
     watcher.on('error', cb);
